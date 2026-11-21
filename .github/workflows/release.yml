@@ -1,5 +1,7 @@
-# Tự build và phát hành khi đẩy tag phiên bản (ví dụ: git tag v1.0.0 && git push origin v1.0.0).
-# Mọi file .exe/.AppImage trên trang Releases đều được build ở đây, công khai, từ đúng mã nguồn của tag.
+# Tự build và phát hành phiên bản mới. Hai cách kích hoạt:
+#  1. Trên GitHub: tab Actions -> Release -> Run workflow (số phiên bản lấy từ package.json).
+#  2. Đẩy tag: git tag v1.0.1 && git push origin v1.0.1
+# Mọi file .exe/.AppImage trên trang Releases đều được build ở đây, công khai, từ đúng mã nguồn.
 name: Release
 
 on:
@@ -39,7 +41,7 @@ jobs:
 
   release:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -51,9 +53,14 @@ jobs:
           merge-multiple: true
       - name: Tạo mã SHA256
         run: cd out && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt
+      - name: Xác định phiên bản
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then TAG="$GITHUB_REF_NAME"; else TAG="v$(node -p "require('./package.json').version")"; fi
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
+          echo "Phát hành $TAG"
       - name: Lấy ghi chú phiên bản từ CHANGELOG.md
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
           awk -v v="$VERSION" '
             $0 ~ "^## \\[" v "\\]" {on=1; next}
             on && /^## \[/ {exit}
@@ -72,7 +79,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" out/* \
-            --title "ChatHub $GITHUB_REF_NAME" \
-            --notes-file notes.md \
-            --verify-tag
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::error::Phiên bản $TAG đã tồn tại. Hãy tăng version trong package.json và thêm mục mới vào CHANGELOG.md."
+            exit 1
+          fi
+          gh release create "$TAG" out/* \
+            --target "$GITHUB_SHA" \
+            --title "ChatHub $TAG" \
+            --notes-file notes.md

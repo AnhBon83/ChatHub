@@ -132,6 +132,12 @@ npm run build:linux       # -> dist/ChatHub-x.y.z.AppImage
 npm run build:mac         # -> dist/ChatHub-x.y.z.dmg (chạy trên máy Mac)
 ```
 
+### Phát hành phiên bản mới (dành cho người duy trì)
+
+1. Tăng `version` trong `package.json` (VD: `1.0.1`) và thêm mục `## [1.0.1] - ngày` vào `CHANGELOG.md`.
+2. Đẩy lên nhánh `main`.
+3. Vào tab **Actions → Release → Run workflow**. Khoảng 10 phút sau, trang Releases có bản mới kèm file `.exe`, `.AppImage` và `SHA256SUMS.txt`.
+
 ### Cấu trúc mã nguồn
 
 | File | Vai trò |
