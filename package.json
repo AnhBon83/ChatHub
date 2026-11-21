@@ -1,7 +1,7 @@
 {
   "name": "chathub",
   "productName": "ChatHub",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Gom Zalo, Messenger, Fanpage, WhatsApp, Telegram, Shopee, TikTok Shop vào một cửa sổ. Mã nguồn mở, không telemetry, có bản portable.",
   "author": "AnhBon83",
   "license": "MIT",
@@ -39,20 +39,20 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "artifactName": "ChatHub-Setup-${version}.exe"
+      "artifactName": "ChatHub-Setup.exe"
     },
     "mac": {
       "target": "dmg",
-      "artifactName": "ChatHub-${version}.dmg"
+      "artifactName": "ChatHub.dmg"
     },
     "linux": {
       "target": "AppImage",
-      "artifactName": "ChatHub-${version}.AppImage",
+      "artifactName": "ChatHub.AppImage",
       "category": "Network"
     },
     "publish": null,
     "portable": {
-      "artifactName": "ChatHub-Portable-${version}.exe"
+      "artifactName": "ChatHub-Portable.exe"
     }
   }
 }

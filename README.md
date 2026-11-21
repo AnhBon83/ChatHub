@@ -12,7 +12,8 @@ Nhiều tài khoản, tách biệt hoàn toàn. Mã nguồn mở, không theo d�
 [![Giấy phép MIT](https://img.shields.io/badge/gi%E1%BA%A5y%20ph%C3%A9p-MIT-64748b)](LICENSE)
 ![Windows | Linux | macOS](https://img.shields.io/badge/h%E1%BB%87%20%C4%91i%E1%BB%81u%20h%C3%A0nh-Windows%20%7C%20Linux%20%7C%20macOS-475569)
 
-### [⬇️ Tải về bản mới nhất](https://github.com/AnhBon83/ChatHub/releases/latest)
+[![Tải bản Portable](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE-Kh%C3%B4ng%20c%E1%BA%A7n%20c%C3%A0i-0284c7?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Portable.exe)
+[![Tải bản Cài đặt](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20C%C3%80I%20%C4%90%E1%BA%B6T-Windows-4f46e5?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Setup.exe)
 
 <img src="docs/screenshots/01-giao-dien-chinh.png" alt="Giao diện chính của ChatHub" width="900">
 
@@ -61,18 +62,82 @@ không gửi dữ liệu đi đâu. File cài đặt được **GitHub tự buil
 
 ## Tải về & cài đặt
 
-Vào trang **[Releases](https://github.com/AnhBon83/ChatHub/releases/latest)** và chọn file phù hợp:
+ChatHub có **2 phiên bản cho Windows**. Bấm nút là tải ngay bản mới nhất:
 
-| File | Dùng khi nào |
-|---|---|
-| `ChatHub-Portable-x.y.z.exe` | **Khuyên dùng.** Windows, không cần cài, không cần admin. Chép vào một thư mục riêng hoặc USB rồi bấm đúp |
-| `ChatHub-Setup-x.y.z.exe` | Windows, muốn có icon ở Start Menu / Desktop. Cài cho riêng tài khoản Windows của bạn |
-| `ChatHub-x.y.z.AppImage` | Linux. `chmod +x` rồi chạy |
-| `SHA256SUMS.txt` | Mã kiểm tra, để chắc chắn file tải về không bị sửa |
+<table>
+<tr>
+<th width="50%">🎒 Bản Portable <sub>(khuyên dùng)</sub></th>
+<th width="50%">💿 Bản Cài đặt</th>
+</tr>
+<tr>
+<td align="center">
 
-**Lần đầu mở trên Windows** sẽ có cảnh báo *"Windows protected your PC"* vì app chưa mua chứng chỉ ký số
-(vài trăm USD/năm). Bấm **More info → Run anyway**. Nếu muốn chắc chắn, hãy
-[kiểm tra mã SHA256](#kiểm-tra-file-tải-về) hoặc [tự build từ mã nguồn](#tự-build-từ-mã-nguồn).
+[![Tải bản Portable](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE-Kh%C3%B4ng%20c%E1%BA%A7n%20c%C3%A0i-0284c7?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Portable.exe)
+
+`ChatHub-Portable.exe` · ~110 MB
+
+</td>
+<td align="center">
+
+[![Tải bản Cài đặt](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20C%C3%80I%20%C4%90%E1%BA%B6T-Windows-4f46e5?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Setup.exe)
+
+`ChatHub-Setup.exe` · ~120 MB
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+- **Không cần cài**, bấm đúp là chạy
+- **Không cần quyền admin** — dùng được trên máy công ty
+- Dữ liệu nằm trong thư mục `ChatHub-data` **ngay cạnh file .exe**, không ghi gì vào máy
+- Mang theo **USB**, chạy trên máy nào cũng được
+- Xóa thư mục là xóa sạch, không để lại dấu vết
+
+**Phù hợp:** máy công ty, máy dùng chung, muốn mang theo người.
+
+</td>
+<td valign="top">
+
+- Cài như phần mềm bình thường, có **icon ở Start Menu và Desktop**
+- Mở nhanh hơn bản portable (không phải giải nén mỗi lần)
+- Cài cho riêng tài khoản Windows của bạn, thường **không cần admin**
+- Gỡ trong *Settings → Apps* như mọi phần mềm khác
+- Dữ liệu lưu ở `%APPDATA%\ChatHub`
+
+**Phù hợp:** máy cá nhân, dùng hằng ngày.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+**Cách dùng**
+1. Tạo một thư mục riêng, VD `D:\ChatHub` (hoặc trong USB).
+2. Chép `ChatHub-Portable.exe` vào đó.
+3. Bấm đúp để chạy. Chờ vài giây cho app mở.
+4. Mang sang máy khác: chép **cả thư mục** (gồm `ChatHub-data`) — các tài khoản vẫn còn đăng nhập.
+
+</td>
+<td valign="top">
+
+**Cách dùng**
+1. Bấm đúp `ChatHub-Setup.exe`.
+2. Chọn thư mục cài (hoặc để mặc định) → **Install**.
+3. Mở ChatHub từ Start Menu hoặc icon ngoài Desktop.
+4. Cập nhật: tải bản Setup mới và cài đè, dữ liệu giữ nguyên.
+
+</td>
+</tr>
+</table>
+
+> **Cảnh báo "Windows protected your PC" lần đầu mở?** Bình thường — app chưa mua chứng chỉ ký số
+> (vài trăm USD/năm). Bấm **More info → Run anyway**. Muốn chắc chắn file không bị sửa, hãy
+> [kiểm tra mã SHA256](#kiểm-tra-file-tải-về) hoặc [tự build từ mã nguồn](#tự-build-từ-mã-nguồn).
+
+**Hệ điều hành khác:** Linux — [tải `ChatHub.AppImage`](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub.AppImage) rồi `chmod +x ChatHub.AppImage && ./ChatHub.AppImage`.
+macOS — [tự build từ mã nguồn](#tự-build-từ-mã-nguồn).
+Các phiên bản cũ và ghi chú thay đổi: xem trang [Releases](https://github.com/AnhBon83/ChatHub/releases).
 
 ### Cách dùng
 
@@ -112,10 +177,10 @@ Lý do ChatHub ra đời là để **không phải tin vào một file .exe khô
 Mở PowerShell ở thư mục chứa file và chạy:
 
 ```powershell
-Get-FileHash .\ChatHub-Portable-1.0.0.exe -Algorithm SHA256
+Get-FileHash .\ChatHub-Portable.exe -Algorithm SHA256
 ```
 
-So kết quả với dòng tương ứng trong `SHA256SUMS.txt` ở trang Releases. Trùng khớp = file nguyên vẹn.
+So kết quả với dòng tương ứng trong [`SHA256SUMS.txt`](https://github.com/AnhBon83/ChatHub/releases/latest/download/SHA256SUMS.txt) (bấm để tải). Trùng khớp = file nguyên vẹn.
 
 ## Tự build từ mã nguồn
 
@@ -126,17 +191,17 @@ git clone https://github.com/AnhBon83/ChatHub.git
 cd ChatHub
 npm install
 npm start                 # chạy thử
-npm run build:portable    # -> dist/ChatHub-Portable-x.y.z.exe
-npm run build:win         # -> dist/ChatHub-Setup-x.y.z.exe
-npm run build:linux       # -> dist/ChatHub-x.y.z.AppImage
-npm run build:mac         # -> dist/ChatHub-x.y.z.dmg (chạy trên máy Mac)
+npm run build:portable    # -> dist/ChatHub-Portable.exe
+npm run build:win         # -> dist/ChatHub-Setup.exe
+npm run build:linux       # -> dist/ChatHub.AppImage
+npm run build:mac         # -> dist/ChatHub.dmg (chạy trên máy Mac)
 ```
 
 ### Phát hành phiên bản mới (dành cho người duy trì)
 
 1. Tăng `version` trong `package.json` (VD: `1.0.1`) và thêm mục `## [1.0.1] - ngày` vào `CHANGELOG.md`.
 2. Đẩy lên nhánh `main`.
-3. Vào tab **Actions → Release → Run workflow**. Khoảng 10 phút sau, trang Releases có bản mới kèm file `.exe`, `.AppImage` và `SHA256SUMS.txt`.
+3. Vào tab **Actions → Release → Run workflow**. Khoảng 10 phút sau, trang Releases có bản mới kèm file `.exe`, `.AppImage` và `SHA256SUMS.txt`. Các nút tải trong README tự trỏ tới bản mới nhất.
 
 ### Cấu trúc mã nguồn
 

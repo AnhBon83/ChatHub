@@ -70,7 +70,7 @@ jobs:
           {
             echo
             echo "---"
-            echo "**Tải file nào?** Windows: \`ChatHub-Portable-$VERSION.exe\` (không cần cài, không cần admin) hoặc \`ChatHub-Setup-$VERSION.exe\`. Linux: \`ChatHub-$VERSION.AppImage\`."
+            echo "**Tải file nào?** Windows: \`ChatHub-Portable.exe\` (không cần cài, không cần admin) hoặc \`ChatHub-Setup.exe\` (cài như phần mềm thường). Linux: \`ChatHub.AppImage\`."
             echo
             echo "Lần đầu mở trên Windows nếu có cảnh báo SmartScreen: **More info → Run anyway**. Kiểm tra file bằng \`SHA256SUMS.txt\`."
           } >> notes.md

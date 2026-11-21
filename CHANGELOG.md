@@ -2,6 +2,12 @@
 
 Định dạng theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), đánh số theo [Semantic Versioning](https://semver.org/lang/vi/).
 
+## [1.0.1] - 2026-11-21
+
+### Thay đổi
+- File tải về có tên cố định: `ChatHub-Portable.exe`, `ChatHub-Setup.exe`, `ChatHub.AppImage`. Nút tải trong trang giới thiệu luôn tải thẳng bản mới nhất, không phải vào trang Releases.
+- Trang giới thiệu tách rõ 2 phiên bản Portable và Cài đặt, kèm hướng dẫn cho từng bản.
+
 ## [1.0.0] - 2026-11-21
 
 Phiên bản đầu tiên.
@@ -26,4 +32,5 @@ Phiên bản đầu tiên.
 - Không telemetry, không auto-update.
 - File phát hành được build tự động trên GitHub Actions, kèm mã SHA256.
 
+[1.0.1]: https://github.com/AnhBon83/ChatHub/releases/tag/v1.0.1
 [1.0.0]: https://github.com/AnhBon83/ChatHub/releases/tag/v1.0.0
