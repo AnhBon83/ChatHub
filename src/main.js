@@ -14,11 +14,16 @@ const fs = require('node:fs');
 const crypto = require('node:crypto');
 const SERVICES = require('./services');
 
-// Bản portable (ChatHub-Portable.exe): lưu toàn bộ dữ liệu vào thư mục "ChatHub-data"
-// nằm cạnh file .exe thay vì %APPDATA%, để mang theo USB / dùng máy không có quyền admin.
+// Chế độ portable: lưu toàn bộ dữ liệu vào thư mục "ChatHub-data" cạnh file .exe thay vì %APPDATA%,
+// để mang theo USB / dùng máy không có quyền admin. Bật khi:
+//  - chạy bản 1 file ChatHub-Portable.exe (biến PORTABLE_EXECUTABLE_DIR), hoặc
+//  - chạy bản ZIP: cạnh ChatHub.exe có sẵn thư mục "ChatHub-data".
 // Phải đặt trước khi app sẵn sàng, để cookie/đăng nhập cũng nằm ở đó.
-if (process.env.PORTABLE_EXECUTABLE_DIR) {
-  app.setPath('userData', path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'ChatHub-data'));
+const exeDir = path.dirname(process.execPath);
+const portableDir = process.env.PORTABLE_EXECUTABLE_DIR ||
+  (app.isPackaged && fs.existsSync(path.join(exeDir, 'ChatHub-data')) ? exeDir : null);
+if (portableDir) {
+  app.setPath('userData', path.join(portableDir, 'ChatHub-data'));
 }
 
 const SIDEBAR_W = 72;

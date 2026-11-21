@@ -1,0 +1,2 @@
+﻿Thư mục này chứa dữ liệu của ChatHub (tài khoản, phiên đăng nhập).
+Đừng xóa nếu muốn giữ đăng nhập. Đừng chia sẻ cho người khác.

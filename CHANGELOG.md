@@ -4,6 +4,10 @@
 
 ## [1.0.1] - 2026-11-21
 
+### Thêm mới
+- **Bản Portable dạng ZIP** (`ChatHub-Windows.zip`): tải 1 file, giải nén là chạy `ChatHub.exe`. Không cần cài, không cần admin, mở nhanh hơn bản 1 file `.exe`, kèm sẵn `HUONG-DAN.txt`.
+- Bản ZIP tự nhận chế độ portable khi cạnh `ChatHub.exe` có thư mục `ChatHub-data`.
+
 ### Thay đổi
 - File tải về có tên cố định: `ChatHub-Portable.exe`, `ChatHub-Setup.exe`, `ChatHub.AppImage`. Nút tải trong trang giới thiệu luôn tải thẳng bản mới nhất, không phải vào trang Releases.
 - Trang giới thiệu tách rõ 2 phiên bản Portable và Cài đặt, kèm hướng dẫn cho từng bản.

@@ -12,7 +12,7 @@ Nhiều tài khoản, tách biệt hoàn toàn. Mã nguồn mở, không theo d�
 [![Giấy phép MIT](https://img.shields.io/badge/gi%E1%BA%A5y%20ph%C3%A9p-MIT-64748b)](LICENSE)
 ![Windows | Linux | macOS](https://img.shields.io/badge/h%E1%BB%87%20%C4%91i%E1%BB%81u%20h%C3%A0nh-Windows%20%7C%20Linux%20%7C%20macOS-475569)
 
-[![Tải bản Portable](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE-Kh%C3%B4ng%20c%E1%BA%A7n%20c%C3%A0i-0284c7?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Portable.exe)
+[![Tải bản Portable (ZIP)](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE-ZIP%20%C2%B7%20Gi%E1%BA%A3i%20n%C3%A9n%20l%C3%A0%20ch%E1%BA%A1y-0284c7?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Windows.zip)
 [![Tải bản Cài đặt](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20C%C3%80I%20%C4%90%E1%BA%B6T-Windows-4f46e5?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Setup.exe)
 
 <img src="docs/screenshots/01-giao-dien-chinh.png" alt="Giao diện chính của ChatHub" width="900">
@@ -41,7 +41,7 @@ không gửi dữ liệu đi đâu. File cài đặt được **GitHub tự buil
 | 🔔 **Thông báo desktop** | Nhận thông báo tin mới kể cả khi đang ở tài khoản khác |
 | ⚡ **Trả lời nhanh** | Lưu sẵn mẫu tin (chào khách, báo giá, số tài khoản…), bấm một cái là chèn vào ô chat |
 | 😴 **Chế độ ngủ** | Tắt tạm nick ít dùng để tiết kiệm RAM |
-| 🎒 **Bản portable** | Một file `.exe`, không cần cài, **không cần quyền admin**, dữ liệu nằm cạnh file — mang theo USB được |
+| 🎒 **Bản portable** | Một file ZIP, giải nén là chạy, không cần cài, **không cần quyền admin**, dữ liệu nằm cạnh file — mang theo USB được |
 | ⌨️ **Phím tắt** | `Ctrl+1…9` chuyển tài khoản · `Ctrl+R` tải lại · `Ctrl +/-/0` phóng to, thu nhỏ |
 
 ## Hình ảnh
@@ -72,9 +72,9 @@ ChatHub có **2 phiên bản cho Windows**. Bấm nút là tải ngay bản mớ
 <tr>
 <td align="center">
 
-[![Tải bản Portable](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE-Kh%C3%B4ng%20c%E1%BA%A7n%20c%C3%A0i-0284c7?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Portable.exe)
+[![Tải bản Portable (ZIP)](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE-ZIP%20%C2%B7%20Gi%E1%BA%A3i%20n%C3%A9n%20l%C3%A0%20ch%E1%BA%A1y-0284c7?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Windows.zip)
 
-`ChatHub-Portable.exe` · ~110 MB
+`ChatHub-Windows.zip` · 1 file duy nhất
 
 </td>
 <td align="center">
@@ -88,7 +88,7 @@ ChatHub có **2 phiên bản cho Windows**. Bấm nút là tải ngay bản mớ
 <tr>
 <td valign="top">
 
-- **Không cần cài**, bấm đúp là chạy
+- **1 file ZIP duy nhất**: giải nén là chạy, **không cần cài**
 - **Không cần quyền admin** — dùng được trên máy công ty
 - Dữ liệu nằm trong thư mục `ChatHub-data` **ngay cạnh file .exe**, không ghi gì vào máy
 - Mang theo **USB**, chạy trên máy nào cũng được
@@ -100,7 +100,7 @@ ChatHub có **2 phiên bản cho Windows**. Bấm nút là tải ngay bản mớ
 <td valign="top">
 
 - Cài như phần mềm bình thường, có **icon ở Start Menu và Desktop**
-- Mở nhanh hơn bản portable (không phải giải nén mỗi lần)
+- Tìm app nhanh bằng ô tìm kiếm của Windows
 - Cài cho riêng tài khoản Windows của bạn, thường **không cần admin**
 - Gỡ trong *Settings → Apps* như mọi phần mềm khác
 - Dữ liệu lưu ở `%APPDATA%\ChatHub`
@@ -113,10 +113,12 @@ ChatHub có **2 phiên bản cho Windows**. Bấm nút là tải ngay bản mớ
 <td valign="top">
 
 **Cách dùng**
-1. Tạo một thư mục riêng, VD `D:\ChatHub` (hoặc trong USB).
-2. Chép `ChatHub-Portable.exe` vào đó.
-3. Bấm đúp để chạy. Chờ vài giây cho app mở.
-4. Mang sang máy khác: chép **cả thư mục** (gồm `ChatHub-data`) — các tài khoản vẫn còn đăng nhập.
+1. Chuột phải `ChatHub-Windows.zip` → **Extract All…** → chọn nơi giải nén (VD `D:\` hoặc USB).
+2. Mở thư mục `ChatHub` vừa giải nén → bấm đúp **`ChatHub.exe`**.
+3. Muốn có icon ngoài Desktop: chuột phải `ChatHub.exe` → *Send to → Desktop (create shortcut)*.
+4. Mang sang máy khác: chép **cả thư mục `ChatHub`** — các tài khoản vẫn còn đăng nhập.
+
+Trong thư mục có sẵn file `HUONG-DAN.txt` hướng dẫn nhanh.
 
 </td>
 <td valign="top">
@@ -134,6 +136,9 @@ ChatHub có **2 phiên bản cho Windows**. Bấm nút là tải ngay bản mớ
 > **Cảnh báo "Windows protected your PC" lần đầu mở?** Bình thường — app chưa mua chứng chỉ ký số
 > (vài trăm USD/năm). Bấm **More info → Run anyway**. Muốn chắc chắn file không bị sửa, hãy
 > [kiểm tra mã SHA256](#kiểm-tra-file-tải-về) hoặc [tự build từ mã nguồn](#tự-build-từ-mã-nguồn).
+
+**Muốn đúng 1 file `.exe` thay vì ZIP?** [Tải `ChatHub-Portable.exe`](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Portable.exe) — chạy y như bản ZIP,
+nhưng mỗi lần mở mất thêm vài giây để tự giải nén.
 
 **Hệ điều hành khác:** Linux — [tải `ChatHub.AppImage`](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub.AppImage) rồi `chmod +x ChatHub.AppImage && ./ChatHub.AppImage`.
 macOS — [tự build từ mã nguồn](#tự-build-từ-mã-nguồn).
@@ -164,7 +169,7 @@ Lý do ChatHub ra đời là để **không phải tin vào một file .exe khô
 
 | Bản | Thư mục dữ liệu |
 |---|---|
-| Portable | Thư mục `ChatHub-data` nằm **cạnh file .exe** |
+| Portable (ZIP hoặc 1 file .exe) | Thư mục `ChatHub-data` nằm **cạnh file .exe** |
 | Cài đặt (Windows) | `%APPDATA%\ChatHub` |
 | Linux | `~/.config/ChatHub` |
 | macOS | `~/Library/Application Support/ChatHub` |
@@ -177,7 +182,7 @@ Lý do ChatHub ra đời là để **không phải tin vào một file .exe khô
 Mở PowerShell ở thư mục chứa file và chạy:
 
 ```powershell
-Get-FileHash .\ChatHub-Portable.exe -Algorithm SHA256
+Get-FileHash .\ChatHub-Windows.zip -Algorithm SHA256
 ```
 
 So kết quả với dòng tương ứng trong [`SHA256SUMS.txt`](https://github.com/AnhBon83/ChatHub/releases/latest/download/SHA256SUMS.txt) (bấm để tải). Trùng khớp = file nguyên vẹn.

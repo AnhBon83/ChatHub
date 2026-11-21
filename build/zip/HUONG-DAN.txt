@@ -1,0 +1,17 @@
+﻿CHATHUB - HƯỚNG DẪN NHANH
+=========================
+
+1. Bấm đúp vào file ChatHub.exe để mở app.
+   Lần đầu nếu Windows báo "Windows protected your PC": bấm More info -> Run anyway.
+
+2. Bấm "+ Thêm tài khoản", chọn dịch vụ (Zalo, Messenger, Shopee...) rồi đăng nhập như trên web.
+
+3. Toàn bộ dữ liệu (tài khoản, đăng nhập, mẫu trả lời) nằm trong thư mục ChatHub-data ngay bên cạnh.
+   - Mang sang máy khác: chép CẢ THƯ MỤC ChatHub này (USB, ổ cứng...).
+   - Xóa thư mục ChatHub-data = đăng xuất tất cả, không để lại dấu vết.
+   - KHÔNG chia sẻ thư mục ChatHub-data cho người khác.
+
+4. Tạo lối tắt ngoài Desktop: chuột phải ChatHub.exe -> Show more options -> Send to -> Desktop (create shortcut).
+
+Không cần cài đặt, không cần quyền admin.
+Mã nguồn, hướng dẫn đầy đủ và bản mới nhất: https://github.com/AnhBon83/ChatHub

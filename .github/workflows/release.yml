@@ -31,12 +31,24 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx electron-builder ${{ matrix.target }} --publish never
+      - name: Đóng gói bản ZIP (giải nén là chạy)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $stage = "zipstage/ChatHub"
+          New-Item -ItemType Directory -Force "$stage/ChatHub-data" | Out-Null
+          Copy-Item -Recurse "dist/win-unpacked/*" $stage
+          Copy-Item build/zip/HUONG-DAN.txt $stage
+          Copy-Item build/zip/DOC-TOI.txt "$stage/ChatHub-data"
+          Compress-Archive -Path "zipstage/ChatHub" -DestinationPath dist/ChatHub-Windows.zip -CompressionLevel Optimal
+          Get-Item dist/ChatHub-Windows.zip | Select-Object Name, Length
       - uses: actions/upload-artifact@v4
         with:
           name: dist-${{ matrix.os }}
           if-no-files-found: error
           path: |
             dist/*.exe
+            dist/*.zip
             dist/*.AppImage
 
   release:
@@ -70,7 +82,7 @@ jobs:
           {
             echo
             echo "---"
-            echo "**Tải file nào?** Windows: \`ChatHub-Portable.exe\` (không cần cài, không cần admin) hoặc \`ChatHub-Setup.exe\` (cài như phần mềm thường). Linux: \`ChatHub.AppImage\`."
+            echo "**Tải file nào?** Windows: \`ChatHub-Windows.zip\` (giải nén là chạy, không cần cài, không cần admin — khuyên dùng), \`ChatHub-Setup.exe\` (cài như phần mềm thường) hoặc \`ChatHub-Portable.exe\` (1 file duy nhất). Linux: \`ChatHub.AppImage\`."
             echo
             echo "Lần đầu mở trên Windows nếu có cảnh báo SmartScreen: **More info → Run anyway**. Kiểm tra file bằng \`SHA256SUMS.txt\`."
           } >> notes.md
