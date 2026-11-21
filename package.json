@@ -1,0 +1,58 @@
+{
+  "name": "chathub",
+  "productName": "ChatHub",
+  "version": "1.0.0",
+  "description": "Gom Zalo, Messenger, Fanpage, WhatsApp, Telegram, Shopee, TikTok Shop vào một cửa sổ. Mã nguồn mở, không telemetry, có bản portable.",
+  "author": "AnhBon83",
+  "license": "MIT",
+  "homepage": "https://github.com/AnhBon83/ChatHub",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnhBon83/ChatHub.git"
+  },
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win nsis",
+    "build:mac": "electron-builder --mac dmg",
+    "build:linux": "electron-builder --linux AppImage",
+    "build:portable": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "45.4.1",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "local.chathub.app",
+    "productName": "ChatHub",
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "ChatHub-Setup-${version}.exe"
+    },
+    "mac": {
+      "target": "dmg",
+      "artifactName": "ChatHub-${version}.dmg"
+    },
+    "linux": {
+      "target": "AppImage",
+      "artifactName": "ChatHub-${version}.AppImage",
+      "category": "Network"
+    },
+    "publish": null,
+    "portable": {
+      "artifactName": "ChatHub-Portable-${version}.exe"
+    }
+  }
+}

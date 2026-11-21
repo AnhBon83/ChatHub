@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:;">
+  <title>ChatHub</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav id="sidebar">
+    <div id="accounts"></div>
+    <button id="btn-add" class="side-btn" title="Thêm tài khoản">+</button>
+    <div class="spacer"></div>
+    <button id="btn-qr" class="side-btn" title="Trả lời nhanh">⚡</button>
+  </nav>
+
+  <main id="empty">
+    <div class="empty-card">
+      <h1>ChatHub</h1>
+      <p>Gom Zalo, Messenger, Fanpage, WhatsApp, Telegram, Shopee, TikTok Shop vào một cửa sổ.</p>
+      <p class="muted">Mọi dữ liệu chỉ nằm trên máy này. Không gửi đi đâu.</p>
+      <button id="btn-add-empty" class="primary">+ Thêm tài khoản đầu tiên</button>
+    </div>
+  </main>
+
+  <aside id="qr-panel" hidden>
+    <header>
+      <strong>Trả lời nhanh</strong>
+      <button id="qr-close" class="icon" title="Đóng">✕</button>
+    </header>
+    <input id="qr-search" type="search" placeholder="Tìm mẫu…">
+    <ul id="qr-list"></ul>
+    <button id="qr-new" class="primary">+ Mẫu mới</button>
+    <p class="muted small">Bấm vào mẫu để chèn vào ô chat đang mở. Nút ⧉ để sao chép.</p>
+  </aside>
+
+  <div id="modal" hidden>
+    <form id="modal-form" class="modal-card">
+      <h2 id="modal-title"></h2>
+      <div id="modal-body"></div>
+      <div class="modal-actions">
+        <button type="button" id="modal-cancel">Hủy</button>
+        <button type="submit" id="modal-ok" class="primary">OK</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

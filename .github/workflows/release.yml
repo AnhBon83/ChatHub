@@ -1,0 +1,78 @@
+# Tự build và phát hành khi đẩy tag phiên bản (ví dụ: git tag v1.0.0 && git push origin v1.0.0).
+# Mọi file .exe/.AppImage trên trang Releases đều được build ở đây, công khai, từ đúng mã nguồn của tag.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: --win nsis portable
+          - os: ubuntu-latest
+            target: --linux AppImage
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx electron-builder ${{ matrix.target }} --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.os }}
+          if-no-files-found: error
+          path: |
+            dist/*.exe
+            dist/*.AppImage
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - name: Tạo mã SHA256
+        run: cd out && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt
+      - name: Lấy ghi chú phiên bản từ CHANGELOG.md
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          awk -v v="$VERSION" '
+            $0 ~ "^## \\[" v "\\]" {on=1; next}
+            on && /^## \[/ {exit}
+            on && /^\[/ {exit}
+            on {print}
+          ' CHANGELOG.md > notes.md
+          {
+            echo
+            echo "---"
+            echo "**Tải file nào?** Windows: \`ChatHub-Portable-$VERSION.exe\` (không cần cài, không cần admin) hoặc \`ChatHub-Setup-$VERSION.exe\`. Linux: \`ChatHub-$VERSION.AppImage\`."
+            echo
+            echo "Lần đầu mở trên Windows nếu có cảnh báo SmartScreen: **More info → Run anyway**. Kiểm tra file bằng \`SHA256SUMS.txt\`."
+          } >> notes.md
+          cat notes.md
+      - name: Phát hành
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" out/* \
+            --title "ChatHub $GITHUB_REF_NAME" \
+            --notes-file notes.md \
+            --verify-tag
