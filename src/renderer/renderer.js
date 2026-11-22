@@ -18,7 +18,7 @@ function el(tag, attrs = {}, ...children) {
 }
 
 function syncLayout() {
-  api.setLayout({ rightPanel: qrOpen ? QR_WIDTH : 0, overlay: !$('#modal').hidden });
+  api.setLayout({ rightPanel: qrOpen ? QR_WIDTH : 0, overlay: !$('#modal').hidden || !$('#storage').hidden });
 }
 
 // ---------- Danh sách tài khoản ----------
@@ -31,7 +31,7 @@ function renderAccounts() {
       class: 'acct' + (acc.id === state.activeId ? ' active' : '') + (acc.sleep ? ' sleep' : ''),
       style: { background: svc.color },
       title: `${acc.name} — ${svc.name}${acc.sleep ? ' (đang ngủ)' : ''}\nChuột phải để xem tùy chọn`,
-      onclick: () => api.activate(acc.id),
+      onclick: () => { if (!$('#storage').hidden) toggleStorage(false); api.activate(acc.id); },
       oncontextmenu: (e) => { e.preventDefault(); api.accountMenu(acc.id); }
     }, svc.short, el('span', { class: 'initial' }, acc.name.trim().charAt(0).toUpperCase()));
     if (acc.unread > 0) btn.append(el('span', { class: 'badge' }, acc.unread > 99 ? '99+' : String(acc.unread)));
@@ -162,10 +162,183 @@ $('#qr-close').addEventListener('click', () => toggleQr(false));
 $('#qr-new').addEventListener('click', () => editQuickReply(null));
 $('#qr-search').addEventListener('input', renderQuickReplies);
 
+// ---------- Dung lượng lưu trữ ----------
+const CAT = {
+  all: { label: 'Tất cả', color: '#0f172a' },
+  image: { label: 'Hình ảnh', icon: '🖼️', color: '#0ea5e9' },
+  video: { label: 'Video', icon: '🎬', color: '#8b5cf6' },
+  audio: { label: 'Âm thanh', icon: '🎵', color: '#f59e0b' },
+  document: { label: 'Tài liệu & file', icon: '📄', color: '#10b981' },
+  web: { label: 'Mã trang web', icon: '🧩', color: '#64748b' },
+  data: { label: 'Đăng nhập & dữ liệu trang', icon: '🔐', color: '#f43f5e' },
+  other: { label: 'Khác', icon: '📦', color: '#a8a29e' }
+};
+const CAT_KEYS = Object.keys(CAT).filter((k) => k !== 'all');
+let stFilter = 'all';
+let stReport = null;
+let stBusy = false;
+
+function fmt(bytes) {
+  if (!bytes) return '0 B';
+  const u = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.min(u.length - 1, Math.floor(Math.log(bytes) / Math.log(1024)));
+  const v = bytes / 1024 ** i;
+  return `${v >= 100 || i === 0 ? Math.round(v) : v.toFixed(1)} ${u[i]}`;
+}
+const sizeOf = (r, cat) => (cat === 'all' ? r.total : r.cats[cat].size);
+const deletableOf = (r, cat) => (cat === 'all' ? CAT_KEYS.reduce((n, k) => n + r.cats[k].deletable, 0) : r.cats[cat].deletable);
+
+function setBusy(on) {
+  stBusy = on;
+  document.querySelectorAll('#storage button').forEach((b) => { if (b.id !== 'st-close') b.disabled = on; });
+}
+function showResult(text, isError) {
+  const box = $('#st-result');
+  box.textContent = text;
+  box.className = 'st-result' + (isError ? ' err' : '');
+  box.hidden = !text;
+}
+
+async function scanStorage() {
+  setBusy(true);
+  $('#st-summary').textContent = 'Đang quét dung lượng… (có thể mất vài giây)';
+  try {
+    stReport = await api.storageScan();
+    renderStorage();
+  } catch (e) {
+    showResult('Không quét được: ' + e.message, true);
+  } finally { setBusy(false); }
+}
+
+function renderStorage() {
+  if (!stReport) return;
+  const rows = stReport.accounts
+    .map((r) => ({ ...r, acc: state.accounts.find((a) => a.id === r.id) }))
+    .filter((r) => r.acc);
+  const grand = rows.reduce((n, r) => n + r.total, 0) + stReport.shared;
+  $('#st-summary').textContent = `Tổng ${fmt(grand)} trên máy · ${rows.length} tài khoản`;
+  $('#st-folder').title = 'Mở thư mục dữ liệu: ' + stReport.dataPath;
+
+  // Bộ lọc
+  const filters = $('#st-filters');
+  filters.replaceChildren();
+  for (const [key, c] of Object.entries(CAT)) {
+    const total = rows.reduce((n, r) => n + sizeOf(r, key), 0);
+    filters.append(el('button', {
+      class: 'chip' + (stFilter === key ? ' on' : ''), role: 'tab', 'aria-selected': String(stFilter === key),
+      onclick: () => { stFilter = key; renderStorage(); }
+    }, key === 'all' ? null : el('span', { class: 'dot', style: { background: c.color } }), c.label, el('span', { class: 'sz' }, fmt(total))));
+  }
+
+  // Danh sách tài khoản, sắp theo dung lượng của loại đang lọc
+  rows.sort((a, b) => sizeOf(b, stFilter) - sizeOf(a, stFilter));
+  const maxTotal = Math.max(1, ...rows.map((r) => r.total));
+  const list = $('#st-list');
+  list.replaceChildren();
+  if (!rows.length) list.append(el('p', { class: 'muted' }, 'Chưa có tài khoản nào.'));
+
+  for (const r of rows) {
+    const svc = state.services[r.acc.service] || {};
+    const shown = sizeOf(r, stFilter);
+    const bar = el('div', { class: 'bar', style: { width: `${Math.max(2, (r.total / maxTotal) * 100)}%` } });
+    for (const k of CAT_KEYS) {
+      if (!r.cats[k].size) continue;
+      bar.append(el('span', {
+        class: stFilter !== 'all' && stFilter !== k ? 'dim' : '',
+        title: `${CAT[k].label}: ${fmt(r.cats[k].size)}`,
+        style: { width: `${(r.cats[k].size / Math.max(1, r.total)) * 100}%`, background: CAT[k].color }
+      }));
+    }
+    const brk = el('div', { class: 'st-break' });
+    for (const k of CAT_KEYS) {
+      if (r.cats[k].size) brk.append(el('span', {}, `${CAT[k].icon} ${CAT[k].label}: `, el('b', {}, fmt(r.cats[k].size))));
+    }
+
+    const btns = el('div', { class: 'st-btns' });
+    const del = deletableOf(r, stFilter);
+    if (stFilter === 'all') {
+      btns.append(el('button', { class: 'primary', ...(del ? {} : { disabled: '' }), onclick: () => confirmDelete(r, 'all') },
+        `🧹 Xóa bộ nhớ đệm (${fmt(del)})`));
+    } else if (stFilter !== 'data') {
+      btns.append(el('button', { class: 'primary', ...(del ? {} : { disabled: '' }), onclick: () => confirmDelete(r, stFilter) },
+        `🧹 Xóa ${CAT[stFilter].label.toLowerCase()} (${fmt(del)})`));
+      const inData = r.cats[stFilter].size - del;
+      if (inData > 0) btns.append(el('span', { class: 'hint' }, `${fmt(inData)} nằm trong dữ liệu trang, không xóa lẻ được`));
+    }
+    if (stFilter === 'all' || stFilter === 'data') {
+      btns.append(el('button', { class: 'danger', onclick: () => confirmClearSite(r) }, '🔐 Xóa dữ liệu trang…'));
+    }
+
+    list.append(el('div', { class: 'st-row' },
+      el('div', { class: 'tile', style: { background: svc.color } }, svc.short),
+      el('div', { class: 'name' }, r.acc.name, el('small', {}, svc.name)),
+      el('div', { class: 'size' }, fmt(shown), el('small', {}, stFilter === 'all' ? 'tổng' : CAT[stFilter].label.toLowerCase())),
+      bar, brk, btns));
+  }
+
+  list.append(el('div', { class: 'st-row shared' },
+    el('div', { class: 'tile' }, '⚙'),
+    el('div', { class: 'name' }, 'ChatHub (dùng chung)', el('small', {}, 'cài đặt, mẫu trả lời, bộ nhớ đệm đồ họa')),
+    el('div', { class: 'size' }, fmt(stReport.shared))));
+  if (stReport.pending) showResult(`${stReport.pending} file đang được sử dụng sẽ tự xóa ở lần mở app sau.`);
+}
+
+function confirmDelete(r, cat) {
+  const amount = fmt(deletableOf(r, cat));
+  const what = cat === 'all' ? 'toàn bộ bộ nhớ đệm' : `${CAT[cat].label.toLowerCase()} trong bộ nhớ đệm`;
+  openModal(`Xóa ${what} của "${r.acc.name}"?`, [
+    el('p', {}, `Giải phóng khoảng ${amount}. Bạn vẫn đăng nhập bình thường.`),
+    el('p', { class: 'muted small' }, 'Ảnh, video, file trong cuộc trò chuyện không bị mất — trang sẽ tải lại từ máy chủ khi bạn mở lại (có thể chậm hơn một chút lần đầu).')
+  ], {
+    okText: 'Xóa', danger: true,
+    onSubmit: () => { runDelete(() => api.storageDelete(r.id, cat)); }
+  });
+}
+function confirmClearSite(r) {
+  openModal(`Xóa dữ liệu trang của "${r.acc.name}"?`, [
+    el('p', {}, `Xóa dữ liệu offline của trang (IndexedDB, Local Storage, Service Worker) và toàn bộ bộ nhớ đệm — khoảng ${fmt(r.cats.data.size + deletableOf(r, 'all'))}.`),
+    el('p', {}, el('b', {}, 'Có thể phải đăng nhập lại'), ' (Zalo, WhatsApp lưu khóa đăng nhập ở đây). Tin nhắn trên máy chủ không bị mất.')
+  ], { okText: 'Xóa dữ liệu trang', danger: true, onSubmit: () => { runDelete(() => api.storageClearSite(r.id), true); } });
+}
+async function runDelete(fn, isSite) {
+  setBusy(true);
+  showResult('Đang xóa…');
+  try {
+    const before = stReport;
+    const res = await fn();
+    await scanStorage();
+    if (isSite) {
+      showResult('Đã xóa dữ liệu trang. Nếu trang yêu cầu, hãy đăng nhập lại.');
+    } else {
+      const total = (r) => r.accounts.reduce((n, a) => n + a.total, 0);
+      const freed = Math.max(res.freed, total(before) - total(stReport));
+      let msg = `Đã giải phóng ${fmt(freed)} (${res.count} file).`;
+      if (res.locked) msg += ` ${res.locked} file đang được sử dụng sẽ tự xóa ở lần mở app sau.`;
+      showResult(msg);
+    }
+  } catch (e) {
+    showResult('Không xóa được: ' + e.message, true);
+  } finally { setBusy(false); }
+}
+
+function toggleStorage(open) {
+  $('#storage').hidden = !open;
+  $('#btn-storage').classList.toggle('on', open);
+  if (open && qrOpen) toggleQr(false);
+  syncLayout();
+  if (open) { showResult(''); scanStorage(); }
+}
+$('#btn-storage').addEventListener('click', () => toggleStorage($('#storage').hidden));
+$('#st-close').addEventListener('click', () => toggleStorage(false));
+$('#st-refresh').addEventListener('click', () => { showResult(''); scanStorage(); });
+$('#st-folder').addEventListener('click', () => api.openDataFolder());
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('#modal').hidden && !$('#storage').hidden) toggleStorage(false); });
+
 // ---------- Nhận trạng thái từ main ----------
 api.onState((s) => {
   state = s;
   renderAccounts();
   renderQuickReplies();
+  if (!$('#storage').hidden) renderStorage();
 });
 api.ready();

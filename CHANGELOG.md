@@ -2,6 +2,16 @@
 
 Định dạng theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), đánh số theo [Semantic Versioning](https://semver.org/lang/vi/).
 
+## [1.1.0] - 2026-11-22
+
+### Thêm mới
+- **Quản lý dung lượng** (nút 💾 ở thanh bên): xem dung lượng từng tài khoản, thanh biểu đồ theo loại.
+- **Lọc theo loại**: Hình ảnh, Video, Âm thanh, Tài liệu & file, Mã trang web, Đăng nhập & dữ liệu trang, Khác. Tài khoản tốn nhiều nhất hiện lên đầu.
+- **Xóa theo từng loại cho từng tài khoản** (chỉ bộ nhớ đệm — vẫn giữ đăng nhập, nội dung tự tải lại từ máy chủ).
+- Xóa toàn bộ bộ nhớ đệm, hoặc xóa dữ liệu trang (có cảnh báo có thể phải đăng nhập lại).
+- Nút mở thư mục dữ liệu.
+- File đang bị khóa khi xóa sẽ tự xóa ở lần mở app sau; chỉ xóa trong thư mục dữ liệu của ChatHub.
+
 ## [1.0.1] - 2026-11-21
 
 ### Thêm mới
@@ -36,5 +46,6 @@ Phiên bản đầu tiên.
 - Không telemetry, không auto-update.
 - File phát hành được build tự động trên GitHub Actions, kèm mã SHA256.
 
+[1.1.0]: https://github.com/AnhBon83/ChatHub/releases/tag/v1.1.0
 [1.0.1]: https://github.com/AnhBon83/ChatHub/releases/tag/v1.0.1
 [1.0.0]: https://github.com/AnhBon83/ChatHub/releases/tag/v1.0.0

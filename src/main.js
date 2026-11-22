@@ -13,6 +13,7 @@ const path = require('node:path');
 const fs = require('node:fs');
 const crypto = require('node:crypto');
 const SERVICES = require('./services');
+const storage = require('./storage');
 
 // Chế độ portable: lưu toàn bộ dữ liệu vào thư mục "ChatHub-data" cạnh file .exe thay vì %APPDATA%,
 // để mang theo USB / dùng máy không có quyền admin. Bật khi:
@@ -49,6 +50,7 @@ let win = null;
 let activeId = null;
 let rightPanel = 0;   // độ rộng panel trả lời nhanh (px)
 let overlay = false;  // đang mở hộp thoại trong sidebar -> ẩn trang chat
+const pendingDeletes = new Set(); // file bộ nhớ đệm bị khóa, sẽ xóa ở lần mở app sau
 
 // ---------- Tiện ích ----------
 function isHttp(url) {
@@ -196,6 +198,22 @@ function activate(id) {
   layout();
   view.webContents.focus();
   sendState();
+}
+
+// ---------- Dung lượng lưu trữ ----------
+const partitionDir = (id) => path.join(app.getPath('userData'), 'Partitions', `acct-${id}`);
+const accountSession = (id) => session.fromPartition(`persist:acct-${id}`);
+const savePending = () => writeJSON('pending-deletes.json', [...pendingDeletes]);
+
+async function scanStorage() {
+  const userData = app.getPath('userData');
+  const list = [];
+  for (const acc of accounts) {
+    const r = await storage.scanDir(partitionDir(acc.id));
+    list.push({ id: acc.id, total: r.total, cats: r.cats });
+  }
+  const shared = await storage.dirSize(userData, path.join(userData, 'Partitions'));
+  return { dataPath: userData, accounts: list, shared, pending: pendingDeletes.size };
 }
 
 // ---------- Cửa sổ chính ----------
@@ -353,6 +371,39 @@ function registerIpc() {
     wc.insertText(String(text));
   });
   ipcMain.on('qr:copy', (_e, text) => clipboard.writeText(String(text)));
+
+  // Dung lượng lưu trữ
+  ipcMain.handle('storage:scan', () => scanStorage());
+
+  ipcMain.handle('storage:delete', async (_e, { id, category }) => {
+    if (!accounts.some((a) => a.id === id)) throw new Error('Không tìm thấy tài khoản');
+    if (category !== 'all' && !storage.CATEGORIES.includes(category)) throw new Error('Loại không hợp lệ');
+    const result = await storage.deleteByCategory(partitionDir(id), category, pendingDeletes);
+    if (category === 'all') {
+      // Dọn nốt phần bộ nhớ đệm đang mở bằng API chính thức (không ảnh hưởng đăng nhập)
+      const ses = accountSession(id);
+      await ses.clearCache();
+      await ses.clearCodeCaches({});
+    }
+    savePending();
+    return result;
+  });
+
+  // Xóa dữ liệu trang (IndexedDB, Local Storage, Service Worker...) nhưng giữ cookie.
+  // Nhiều trang (Zalo, WhatsApp) lưu khóa đăng nhập ở đây nên có thể phải đăng nhập lại.
+  ipcMain.handle('storage:clear-site', async (_e, id) => {
+    if (!accounts.some((a) => a.id === id)) throw new Error('Không tìm thấy tài khoản');
+    const ses = accountSession(id);
+    await ses.clearStorageData({
+      storages: ['indexdb', 'localstorage', 'serviceworkers', 'cachestorage', 'filesystem', 'websql', 'shadercache']
+    });
+    await ses.clearCache();
+    await ses.clearCodeCaches({});
+    views.get(id)?.webContents.reload();
+    return true;
+  });
+
+  ipcMain.handle('storage:open-folder', () => shell.openPath(app.getPath('userData')));
 }
 
 // ---------- Khởi động ----------
@@ -369,6 +420,9 @@ if (!app.requestSingleInstanceLock()) {
   app.whenReady().then(() => {
     app.userAgentFallback = cleanUA(app.userAgentFallback);
     accounts = readJSON('accounts.json', []);
+    // Xóa nốt các file bộ nhớ đệm bị khóa ở lần trước, khi chưa trang nào chạy
+    for (const f of storage.processPending(readJSON('pending-deletes.json', []), app.getPath('userData'))) pendingDeletes.add(f);
+    savePending();
     quickReplies = readJSON('quickreplies.json', [
       { id: 'mau-1', title: 'Chào khách', text: 'Dạ em chào anh/chị ạ! Anh/chị cần em hỗ trợ gì ạ?' },
       { id: 'mau-2', title: 'Xin SĐT', text: 'Anh/chị cho em xin số điện thoại để bên em tư vấn chi tiết hơn nhé ạ.' }

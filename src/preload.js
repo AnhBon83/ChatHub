@@ -15,6 +15,10 @@ contextBridge.exposeInMainWorld('chathub', {
   saveQuickReplies: (list) => send('qr:save', list),
   insertQuickReply: (text) => send('qr:insert', text),
   copyQuickReply: (text) => send('qr:copy', text),
+  storageScan: () => ipcRenderer.invoke('storage:scan'),
+  storageDelete: (id, category) => ipcRenderer.invoke('storage:delete', { id, category }),
+  storageClearSite: (id) => ipcRenderer.invoke('storage:clear-site', id),
+  openDataFolder: () => ipcRenderer.invoke('storage:open-folder'),
   onState: (cb) => ipcRenderer.on('state', (_e, s) => cb(s)),
   onRenameRequest: (cb) => ipcRenderer.on('rename-request', (_e, id) => cb(id)),
   onDeleteRequest: (cb) => ipcRenderer.on('delete-request', (_e, id) => cb(id))

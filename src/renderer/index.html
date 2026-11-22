@@ -11,6 +11,7 @@
     <div id="accounts"></div>
     <button id="btn-add" class="side-btn" title="Thêm tài khoản">+</button>
     <div class="spacer"></div>
+    <button id="btn-storage" class="side-btn" title="Dung lượng lưu trữ">💾</button>
     <button id="btn-qr" class="side-btn" title="Trả lời nhanh">⚡</button>
   </nav>
 
@@ -33,6 +34,28 @@
     <button id="qr-new" class="primary">+ Mẫu mới</button>
     <p class="muted small">Bấm vào mẫu để chèn vào ô chat đang mở. Nút ⧉ để sao chép.</p>
   </aside>
+
+  <section id="storage" hidden>
+    <header class="st-head">
+      <div>
+        <h2>Dung lượng lưu trữ</h2>
+        <p class="muted small" id="st-summary">Đang quét…</p>
+      </div>
+      <div class="st-actions">
+        <button id="st-refresh" title="Quét lại">↻ Quét lại</button>
+        <button id="st-folder" title="Mở thư mục dữ liệu">📁 Mở thư mục</button>
+        <button id="st-close" class="icon" title="Đóng">✕</button>
+      </div>
+    </header>
+    <div id="st-filters" class="chips" role="tablist" aria-label="Lọc theo loại"></div>
+    <div id="st-result" class="st-result" hidden></div>
+    <div id="st-list"></div>
+    <p class="muted small st-note">
+      Xóa theo loại chỉ xóa <b>bộ nhớ đệm</b> (bản lưu tạm). Ảnh, video, file trong cuộc trò chuyện vẫn còn trên máy chủ
+      và sẽ tự tải lại khi bạn mở. Phần <b>Đăng nhập &amp; dữ liệu trang</b> chỉ xóa được nguyên khối và có thể phải đăng nhập lại.
+      Loại file được nhận dạng tự động nên con số là ước tính.
+    </p>
+  </section>
 
   <div id="modal" hidden>
     <form id="modal-form" class="modal-card">

@@ -27,7 +27,7 @@ Bán hàng online thường phải mở cùng lúc Zalo, Messenger, Fanpage, Sho
 mỗi nick một trình duyệt. **ChatHub** gom tất cả vào **một cửa sổ duy nhất**: mỗi tài khoản là một icon
 bên trái, có số tin chưa đọc, có thông báo, chuyển qua lại bằng một cú bấm.
 
-ChatHub được viết để **dễ kiểm tra**: toàn bộ mã nguồn chỉ khoảng 700 dòng, không có thư viện lạ,
+ChatHub được viết để **dễ kiểm tra**: toàn bộ mã nguồn chỉ khoảng 1.200 dòng, không có thư viện lạ,
 không gửi dữ liệu đi đâu. File cài đặt được **GitHub tự build công khai từ chính mã nguồn này**
 (xem tab [Actions](https://github.com/AnhBon83/ChatHub/actions)), không ai build tay trên máy riêng.
 
@@ -40,6 +40,7 @@ không gửi dữ liệu đi đâu. File cài đặt được **GitHub tự buil
 | 🔴 **Đếm tin chưa đọc** | Số đỏ trên từng icon và trên thanh taskbar |
 | 🔔 **Thông báo desktop** | Nhận thông báo tin mới kể cả khi đang ở tài khoản khác |
 | ⚡ **Trả lời nhanh** | Lưu sẵn mẫu tin (chào khách, báo giá, số tài khoản…), bấm một cái là chèn vào ô chat |
+| 💾 **Quản lý dung lượng** | Xem mỗi tài khoản chiếm bao nhiêu dung lượng, **lọc theo hình ảnh, video, âm thanh, tài liệu & file**…, xóa theo từng loại cho từng tài khoản |
 | 😴 **Chế độ ngủ** | Tắt tạm nick ít dùng để tiết kiệm RAM |
 | 🎒 **Bản portable** | Một file ZIP, giải nén là chạy, không cần cài, **không cần quyền admin**, dữ liệu nằm cạnh file — mang theo USB được |
 | ⌨️ **Phím tắt** | `Ctrl+1…9` chuyển tài khoản · `Ctrl+R` tải lại · `Ctrl +/-/0` phóng to, thu nhỏ |
@@ -54,6 +55,9 @@ không gửi dữ liệu đi đâu. File cài đặt được **GitHub tự buil
 <tr>
 <td width="50%"><img src="docs/screenshots/04-tao-mau-tra-loi.png" alt="Tạo mẫu trả lời"><p align="center"><b>Tạo mẫu trả lời</b> của riêng bạn</p></td>
 <td width="50%"><img src="docs/screenshots/00-man-hinh-chao.png" alt="Màn hình chào"><p align="center"><b>Lần đầu mở app</b></p></td>
+</tr>
+<tr>
+<td colspan="2"><img src="docs/screenshots/05-dung-luong.png" alt="Quản lý dung lượng"><p align="center"><b>Quản lý dung lượng</b> — xem và xóa theo từng tài khoản, lọc theo hình ảnh, video, âm thanh, tài liệu…</p></td>
 </tr>
 </table>
 
@@ -151,6 +155,22 @@ Các phiên bản cũ và ghi chú thay đổi: xem trang [Releases](https://git
 3. Muốn thêm nick khác: bấm **+** ở thanh bên trái.
 4. **Chuột phải** vào icon tài khoản để: tải lại, đổi tên, sắp xếp, cho ngủ, xóa.
 5. Bấm **⚡** để mở bảng trả lời nhanh.
+6. Bấm **💾** để xem dung lượng và dọn dẹp (xem bên dưới).
+
+### Quản lý dung lượng
+
+Bấm **💾** ở thanh bên trái để xem mỗi tài khoản đang chiếm bao nhiêu dung lượng trên máy.
+
+- **Lọc theo loại:** Tất cả · Hình ảnh · Video · Âm thanh · Tài liệu & file · Mã trang web · Đăng nhập & dữ liệu trang · Khác.
+  Danh sách tự sắp xếp tài khoản tốn nhiều dung lượng nhất (theo loại đang lọc) lên đầu.
+- **Xóa theo loại cho từng tài khoản**, VD chỉ xóa *hình ảnh* của *Zalo Shop chính*. Phần này nằm trong **bộ nhớ đệm**:
+  xóa xong bạn **vẫn đăng nhập**, ảnh/video/file trong cuộc trò chuyện **không mất** — trang tự tải lại từ máy chủ khi cần.
+- **Xóa bộ nhớ đệm** (lọc *Tất cả*): dọn mọi bản lưu tạm của tài khoản đó.
+- **Xóa dữ liệu trang**: dọn dữ liệu offline của trang (IndexedDB, Local Storage…). Giải phóng nhiều hơn nhưng **có thể phải đăng nhập lại**.
+- **Mở thư mục**: mở nơi lưu dữ liệu ChatHub trên máy.
+
+> Loại file được nhận dạng tự động từ nội dung (trình duyệt không lưu file kèm đuôi `.jpg`, `.mp4`…), nên con số là ước tính.
+> File đang được trang sử dụng sẽ tự xóa ở lần mở app sau.
 
 ## Bảo mật & quyền riêng tư
 
@@ -213,6 +233,7 @@ npm run build:mac         # -> dist/ChatHub.dmg (chạy trên máy Mac)
 | File | Vai trò |
 |---|---|
 | [`src/main.js`](src/main.js) | Tiến trình chính: cửa sổ, tách session từng tài khoản, chính sách bảo mật |
+| [`src/storage.js`](src/storage.js) | Quét, phân loại (ảnh, video…) và xóa dung lượng của từng tài khoản |
 | [`src/services.js`](src/services.js) | Danh sách dịch vụ — thêm dịch vụ mới chỉ cần thêm vài dòng |
 | [`src/preload.js`](src/preload.js) | Cầu nối an toàn cho thanh bên (không nạp vào trang chat) |
 | [`src/renderer/`](src/renderer) | Giao diện thanh bên, hộp thoại, trả lời nhanh |
