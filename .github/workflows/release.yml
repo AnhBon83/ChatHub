@@ -71,8 +71,9 @@ jobs:
           echo "TAG=$TAG" >> "$GITHUB_ENV"
           echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
           echo "Phát hành $TAG"
-      - name: Lấy ghi chú phiên bản từ CHANGELOG.md
+      - name: Lấy ghi chú phiên bản (docs/releases/<tag>.md nếu có, nếu không thì từ CHANGELOG.md)
         run: |
+          if [ -f "docs/releases/$TAG.md" ]; then cp "docs/releases/$TAG.md" notes.md; cat notes.md; exit 0; fi
           awk -v v="$VERSION" '
             $0 ~ "^## \\[" v "\\]" {on=1; next}
             on && /^## \[/ {exit}

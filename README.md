@@ -227,6 +227,8 @@ npm run build:mac         # -> dist/ChatHub.dmg (chạy trên máy Mac)
 1. Tăng `version` trong `package.json` (VD: `1.0.1`) và thêm mục `## [1.0.1] - ngày` vào `CHANGELOG.md`.
 2. Đẩy lên nhánh `main`.
 3. Vào tab **Actions → Release → Run workflow**. Khoảng 10 phút sau, trang Releases có bản mới kèm file `.exe`, `.AppImage` và `SHA256SUMS.txt`. Các nút tải trong README tự trỏ tới bản mới nhất.
+4. *(Tuỳ chọn)* Mô tả đẹp hơn cho trang Releases: viết file `docs/releases/v1.2.0.md` trước bước 3 (sẽ dùng thay cho CHANGELOG).
+   Muốn sửa mô tả của bản đã phát hành: sửa file đó rồi chạy **Actions → Release notes → Run workflow** với tag tương ứng.
 
 ### Cấu trúc mã nguồn
 

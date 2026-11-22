@@ -1,0 +1,29 @@
+# Cập nhật phần mô tả của một bản phát hành đã có, từ file docs/releases/<tag>.md
+# Dùng: tab Actions -> Release notes -> Run workflow -> nhập tag (VD: v1.1.0)
+name: Release notes
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Phiên bản cần cập nhật mô tả (VD: v1.1.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  notes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cập nhật mô tả bản phát hành
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then echo "::error::Tag không hợp lệ: $TAG"; exit 1; fi
+          FILE="docs/releases/$TAG.md"
+          if [ ! -f "$FILE" ]; then echo "::error::Không có file $FILE"; exit 1; fi
+          gh release edit "$TAG" --notes-file "$FILE" --title "ChatHub $TAG"
+          echo "Đã cập nhật mô tả cho $TAG"
