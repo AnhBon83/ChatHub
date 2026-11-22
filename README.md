@@ -12,8 +12,8 @@ Nhiều tài khoản, tách biệt hoàn toàn. Mã nguồn mở, không theo d�
 [![Giấy phép MIT](https://img.shields.io/badge/gi%E1%BA%A5y%20ph%C3%A9p-MIT-64748b)](LICENSE)
 ![Windows | Linux | macOS](https://img.shields.io/badge/h%E1%BB%87%20%C4%91i%E1%BB%81u%20h%C3%A0nh-Windows%20%7C%20Linux%20%7C%20macOS-475569)
 
-[![Tải bản Portable (ZIP)](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE-ZIP%20%C2%B7%20Gi%E1%BA%A3i%20n%C3%A9n%20l%C3%A0%20ch%E1%BA%A1y-0284c7?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Windows.zip)
-[![Tải bản Cài đặt](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20C%C3%80I%20%C4%90%E1%BA%B6T-Windows-4f46e5?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Setup.exe)
+[![Tải bản Portable (ZIP) - phiên bản mới nhất](https://img.shields.io/github/v/release/AnhBon83/ChatHub?style=for-the-badge&label=T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE%20%28ZIP%29&color=0284c7&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Windows.zip)
+[![Tải bản Cài đặt - phiên bản mới nhất](https://img.shields.io/github/v/release/AnhBon83/ChatHub?style=for-the-badge&label=T%E1%BA%A2I%20B%E1%BA%A2N%20C%C3%80I%20%C4%90%E1%BA%B6T&color=4f46e5&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Setup.exe)
 
 <img src="docs/screenshots/01-giao-dien-chinh.png" alt="Giao diện chính của ChatHub" width="900">
 
@@ -66,7 +66,8 @@ không gửi dữ liệu đi đâu. File cài đặt được **GitHub tự buil
 
 ## Tải về & cài đặt
 
-ChatHub có **2 phiên bản cho Windows**. Bấm nút là tải ngay bản mới nhất:
+ChatHub có **2 phiên bản cho Windows**. Bấm nút là tải ngay — số trên nút là **phiên bản mới nhất**, tự cập nhật mỗi khi có bản mới
+([xem có gì mới](https://github.com/AnhBon83/ChatHub/releases/latest)):
 
 <table>
 <tr>
@@ -76,14 +77,14 @@ ChatHub có **2 phiên bản cho Windows**. Bấm nút là tải ngay bản mớ
 <tr>
 <td align="center">
 
-[![Tải bản Portable (ZIP)](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE-ZIP%20%C2%B7%20Gi%E1%BA%A3i%20n%C3%A9n%20l%C3%A0%20ch%E1%BA%A1y-0284c7?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Windows.zip)
+[![Tải bản Portable (ZIP) - phiên bản mới nhất](https://img.shields.io/github/v/release/AnhBon83/ChatHub?style=for-the-badge&label=T%E1%BA%A2I%20B%E1%BA%A2N%20PORTABLE%20%28ZIP%29&color=0284c7&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Windows.zip)
 
-`ChatHub-Windows.zip` · 1 file duy nhất
+`ChatHub-Windows.zip` · ~160 MB · 1 file duy nhất
 
 </td>
 <td align="center">
 
-[![Tải bản Cài đặt](https://img.shields.io/badge/T%E1%BA%A2I%20B%E1%BA%A2N%20C%C3%80I%20%C4%90%E1%BA%B6T-Windows-4f46e5?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Setup.exe)
+[![Tải bản Cài đặt - phiên bản mới nhất](https://img.shields.io/github/v/release/AnhBon83/ChatHub?style=for-the-badge&label=T%E1%BA%A2I%20B%E1%BA%A2N%20C%C3%80I%20%C4%90%E1%BA%B6T&color=4f46e5&logo=windows&logoColor=white)](https://github.com/AnhBon83/ChatHub/releases/latest/download/ChatHub-Setup.exe)
 
 `ChatHub-Setup.exe` · ~120 MB
 
